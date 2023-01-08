@@ -15,10 +15,6 @@ function App() {
   ]
 
   let [tasks, setTasks] = useState<Array<TaskType>>(initTasks);
-  // или вот так
-  // let arr = useState(initTasks);
-  // let tasks = arr[0];
-  // let setTasks = arr[1];
 
   let [filter, setFilter] = useState<FilterVuluesType>("all");
 
@@ -32,13 +28,22 @@ function App() {
   }
 
   const addTask = (title: string) => {
-    let newTask ={id: v1(), title: title, isDone: false};
+    let newTask = { id: v1(), title: title, isDone: false };
     let newTasks = [newTask, ...tasks];
     setTasks(newTasks);
   }
 
   const changeFilter = (value: FilterVuluesType) => {
     setFilter(value);
+  }
+  function changeStatus(taskId: string, isDone: boolean) {
+    let task = tasks.find((t) => {
+      return t.id === taskId
+    })
+    if (task) {
+      task.isDone = isDone;
+    }
+    setTasks([...tasks]);
   }
 
   let taskForTodoList = tasks;
@@ -54,7 +59,9 @@ function App() {
         tasks={taskForTodoList}
         removeTask={removeTask}
         changeFilter={changeFilter}
-        addTask={addTask} />
+        addTask={addTask}
+        changeTaskStatus={changeStatus}
+        filter={filter} />
     </div>
   )
 }
